@@ -11,19 +11,20 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_order;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tour")
     private Tour tour;
     private boolean confirmed;
-    @OneToMany(mappedBy = "userOrders")
-    Set<User> usersOfOrder;
+    //    @OneToMany(mappedBy = "userOrders")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user")
+    User userOrders;
 
     public Order() {
     }
 
     public Order(User user, Tour tour) {
-        this.usersOfOrder = new HashSet<>();
-        this.usersOfOrder.add(user);
+        this.userOrders = user;
         this.tour = tour;
         user.userOrders.add(this);
         tour.ordersOfTour.add(this);
@@ -41,8 +42,8 @@ public class Order {
         this.confirmed = confirmed;
     }
 
-    public Set<User> getUsersOfOrder() {
-        return usersOfOrder;
+    public User getUserOrders() {
+        return userOrders;
     }
 
     public boolean isConfirmed() {
@@ -55,7 +56,7 @@ public class Order {
                 "id_order=" + id_order +
                 ", tour=" + tour +
                 ", confirmed=" + confirmed +
-                ", usersOfOrder=" + usersOfOrder +
+                ", usersOfOrder=" + userOrders +
                 '}';
     }
 

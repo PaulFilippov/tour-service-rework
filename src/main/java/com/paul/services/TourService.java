@@ -19,6 +19,9 @@ public class TourService {
 
     private TourRepository tourRep;
 
+    public TourService() {
+    }
+
     @Autowired
     public TourService(TourRepository tourRep) {
         this.tourRep = tourRep;

@@ -9,6 +9,7 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_user;
@@ -20,11 +21,11 @@ public class User implements UserDetails {
     @Temporal(TemporalType.DATE)
     private Date birthday;
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "enum('USER')")
+    @Column(length = 50)
     private UserRole authorities;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_user")
+    @OneToMany(mappedBy = "userOrders", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Order> userOrders;
+
 
     public User() {
 
@@ -40,6 +41,8 @@ public class User implements UserDetails {
         this.userOrders = new HashSet<>();
         this.authorities = authorities;
     }
+
+
 
     public Long getId_user() {
         return id_user;

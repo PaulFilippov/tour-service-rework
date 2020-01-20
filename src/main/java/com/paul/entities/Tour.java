@@ -1,9 +1,7 @@
 package com.paul.entities;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tours")
@@ -19,7 +17,7 @@ public class Tour {
     @Temporal(TemporalType.DATE)
     private Date end_date;
     private Integer count_limit;
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Order> ordersOfTour;
 
     public Tour() {
