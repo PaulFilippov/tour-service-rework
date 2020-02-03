@@ -1,5 +1,7 @@
 package com.paul.entities;
 
+import com.fasterxml.jackson.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,10 +10,16 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id_user")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
+    @SequenceGenerator(name="user_id_generator", sequenceName = "user_seq", allocationSize=1)
     private Long id_user;
     private String first_name;
     private String last_name;
@@ -24,6 +32,7 @@ public class User implements UserDetails {
     @Column(length = 50)
     private UserRole authorities;
     @OneToMany(mappedBy = "userOrders", cascade = CascadeType.ALL, orphanRemoval = true)
+   // @JsonManagedReference
     Set<Order> userOrders;
 
 

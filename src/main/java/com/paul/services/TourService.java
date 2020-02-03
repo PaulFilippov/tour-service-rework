@@ -42,12 +42,19 @@ public class TourService {
     public int getNumberOfFreePlaces(Tour tour) {
         int count_limit = tour.getCount_limit();
         Set<Order> ordersOfTour = tour.getOrdersOfTour();
-        int booked_places = ordersOfTour.size();
+//        int booked_places = ordersOfTour.size();
+
+        int booked_places = 0;
+        for (Order order : ordersOfTour)
+        {
+           booked_places += order.getCountReservedByUser();
+        }
+
         int numberFreePlaces = count_limit - booked_places;
         return numberFreePlaces;
     }
 
-    //проверка прошел ли уже тур
+    //проверяет прошел ли уже тур
     public boolean isPassedTour(Tour tour) {
         Date currDate = new Date();
         Date startDate = tour.getStart_date();

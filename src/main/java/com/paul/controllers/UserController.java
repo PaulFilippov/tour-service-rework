@@ -1,7 +1,6 @@
 package com.paul.controllers;
 
 import com.paul.entities.User;
-import com.paul.repositories.UserRepository;
 import com.paul.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +14,10 @@ import java.util.Date;
 @Controller
 public class UserController {
 
-    private UserRepository userRepository;
     private UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -49,7 +46,7 @@ public class UserController {
         curInfoUser.setFirst_name(firstname);
         curInfoUser.setLast_name(lstname);
         curInfoUser.setBirthday(dt);
-        userService.saveUserProf(curInfoUser);
+        userService.saveUserProfile(curInfoUser);
         return "redirect:/profile";
     }
 

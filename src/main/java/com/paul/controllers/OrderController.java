@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Set;
@@ -41,4 +43,12 @@ public class OrderController {
         orderService.deleteOrder(id_order);
         return "redirect:/orders";
     }
+
+    @ResponseBody
+    @GetMapping(value = "/orderss")
+    public Set<Order> showUserOrders2() {
+        Set<Order> userOrders = orderService.getUserOrders(userService.getCurAuthUser());
+        return userOrders;
+    }
+
 }

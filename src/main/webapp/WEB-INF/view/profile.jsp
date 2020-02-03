@@ -33,7 +33,7 @@
                             <a href="/profile"> <c:out value="${pageContext.request.remoteUser}"/> </a>
                         </li>
                         <li>
-                            <a href="<c:url value="/logout" />" type="button" class="btn btn-danger btn-xs">Выйти</a>
+                            <a href="<c:url value="/logout" />">Выйти</a>
                         </li>
                     </ul>
                 </div>

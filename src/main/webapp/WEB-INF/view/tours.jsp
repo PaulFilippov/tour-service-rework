@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf8" pageEncoding="utf8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="false" %>
 
 <!DOCTYPE HTML>
@@ -32,9 +33,8 @@
                         <li>
                             <a href="/profile"> <c:out value="${pageContext.request.remoteUser}"/> </a>
                         </li>
-
                         <li>
-                            <a href="<c:url value="/logout" />" type="button" class="btn btn-danger btn-xs">Выйти</a>
+                            <a href="<c:url value="/logout" />">Выйти</a>
                         </li>
                     </ul>
                 </div>
@@ -57,37 +57,56 @@
                     <th>Дата начала</th>
                     <th>Дата окончания</th>
                     <th>Осталось мест</th>
+                    <th>Количество билетов</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${allTours}" var="tour">
                     <c:if test="${!tourService.isPassedTour(tour)}">
-                        <tr>
-                            <td>${tour.name}</td>
-                            <td>${tour.description}</td>
-                            <td>${tour.location}</td>
-                            <td><fmt:formatDate value="${tour.start_date}" pattern="yyyy-MM-dd"/></td>
-                            <td><fmt:formatDate value="${tour.end_date}" pattern="yyyy-MM-dd"/></td>
-                            <c:set var="freePlaces" value="${tourService.getNumberOfFreePlaces(tour)}"/>
-                            <td> ${freePlaces}</td>
-                            <td>
-                                <c:set var="checkTourInUserOrder"
-                                       value="${tourService.checkTourInUserOrders(curUser,tour)}"/>
-                                <c:choose>
-                                    <c:when test="${checkTourInUserOrder}">
-                                        <span>Вы уже заказали</span>
-                                    </c:when>
-                                    <c:when test="${freePlaces==0}">
-                                        <span>Мест нет</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="/orderTourByUser/${tour.id_tour}" type="button"
-                                           class="btn btn-primary btn-xs">Забронировать</a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
+                        <form name="${tour.id_tour}+selectForm" class="form-horizontal" action="/orderTourByUser"
+                              method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <tr>
+                                <input type="text" name="id_tour" value="${tour.id_tour}" class="hidden">
+                                <td>${tour.name}</td>
+                                <td>${tour.description}</td>
+                                <td>${tour.location}</td>
+                                <td><fmt:formatDate value="${tour.start_date}" pattern="yyyy-MM-dd"/></td>
+                                <td><fmt:formatDate value="${tour.end_date}" pattern="yyyy-MM-dd"/></td>
+                                <c:set var="freePlaces" value="${tourService.getNumberOfFreePlaces(tour)}"/>
+                                <td> ${freePlaces}</td>
+                                <c:set var="selectItem" value="0"/>
+                                <td>
+                                    <select name="selectNumberOfTicketsByUserID${tour.id_tour}" class="selectpicker">
+                                        <option value="0" selected="selected">0</option>
+                                        <c:forEach begin="1" end="${freePlaces}" var="selectItem">
+                                            <option value="${selectItem}">${selectItem}</option>
+                                        </c:forEach>
+                                        <c:set var="id">${tour.id_tour}</c:set>
+                                        <c:if test="${(mapSelectedTickets[id] != 0) && (mapSelectedTickets[id] != '') && (mapSelectedTickets[id] != null)}">
+                                            <option selected disabled
+                                                    hidden> ${mapSelectedTickets[id]} </option>
+                                        </c:if>
+                                    </select>
+                                </td>
+                                <td>
+                                    <c:set var="checkTourInUserOrder"
+                                           value="${tourService.checkTourInUserOrders(curUser,tour)}"/>
+                                    <c:choose>
+                                        <c:when test="${checkTourInUserOrder}">
+                                            <span>Вы уже заказали</span>
+                                        </c:when>
+                                        <c:when test="${freePlaces==0}">
+                                            <span>Мест нет</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="submit" class="btn btn-primary btn-xs" value="Забронировать">
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </form>
                     </c:if>
                 </c:forEach>
                 </tbody>

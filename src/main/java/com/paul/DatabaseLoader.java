@@ -1,13 +1,8 @@
 package com.paul;
 
-import com.paul.entities.Order;
-import com.paul.entities.Tour;
-import com.paul.entities.User;
-import com.paul.entities.UserRole;
-import com.paul.repositories.OrderRepository;
-import com.paul.repositories.TourRepository;
-import com.paul.repositories.UserRepository;
-import com.paul.services.UserService;
+import com.paul.entities.*;
+import com.paul.repositories.*;
+import com.paul.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,17 +20,17 @@ public class DatabaseLoader implements ApplicationRunner {
 
     private UserRepository userRepository;
     private TourRepository tourRepository;
-    private TourRepository tourService;
-    private UserService userService;
     private OrderRepository orderRep;
+    private TourService tourService;
+    private UserService userService;
 
 
-    public DatabaseLoader(UserRepository userRepository, TourRepository tourRepository, TourRepository tourService, UserService userService, OrderRepository orderRep) {
+    public DatabaseLoader(UserRepository userRepository, TourRepository tourRepository, OrderRepository orderRep, TourService tourService, UserService userService) {
         this.userRepository = userRepository;
         this.tourRepository = tourRepository;
+        this.orderRep = orderRep;
         this.tourService = tourService;
         this.userService = userService;
-        this.orderRep = orderRep;
     }
 
     public void run(ApplicationArguments args) {
@@ -65,7 +60,6 @@ public class DatabaseLoader implements ApplicationRunner {
         }
     }
 
-    //генерация туров
     public void generateToursInBD() {
         Date dt_start = new Date();
         Date dt_end = new Date();
@@ -116,7 +110,7 @@ public class DatabaseLoader implements ApplicationRunner {
     public void generateOrdersForUsers() {
         for (Long i = 0L; i < 10; i++) {
             int numOrders = 0;
-            for (Long j = i + 20; j < 20 * 2; j++) {
+            for (Long j = i+10; j < 20*2; j++) {
                 if (userRepository.findById(i).orElse(null) == null) {
                     break;
                 } else if (tourRepository.findById(j).orElse(null) == null) {
@@ -125,7 +119,11 @@ public class DatabaseLoader implements ApplicationRunner {
                     //System.out.println("iiiii:"+i+" JJJJ:"+j);
                     User user = userRepository.findById(i).get();
                     Tour tour = tourRepository.findById(j).get();
-                    Order order = new Order(user, tour);
+                    if (tourService.getNumberOfFreePlaces(tour) <= 0) {
+                        continue;
+                    }
+                    int countReserveByUser = 1;
+                    Order order = new Order(user, tour, countReserveByUser);
                     orderRep.save(order);
                     numOrders++;
                     if (numOrders == 3) {

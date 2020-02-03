@@ -35,10 +35,12 @@ public class OrderService {
     }
 
     // создание нового заказанного тура для текущегор авторизованного юзера
-    public void createNewOrderForCurrAuthUser(Tour tour) {
-        User currUser = userService.getCurAuthUser();
-        Order order = new Order(currUser, tour);
-        orderRep.save(order);
+    public void createNewOrderForCurrAuthUser(Tour tour, int numberOfTickets) {
+        if (numberOfTickets > 0) {
+            User currUser = userService.getCurAuthUser();
+            Order order = new Order(currUser, tour, numberOfTickets);
+            orderRep.save(order);
+        }
     }
 
     public Order getOrderById(Long id_order) {

@@ -11,13 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 import javax.transaction.Transactional;
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -47,20 +42,20 @@ public class UserService implements UserDetailsService {
     }
 
     //возвращает email авторизованого юзера (email вводится в поле username в spring sec)
-    public String getCurUserEmail() {
+    public String getCurrentUserEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String emailCurrentAuthUser = auth.getName();
         return emailCurrentAuthUser;
     }
 
-    public void saveUserProf(User user) {
+    public void saveUserProfile(User user) {
         userRepository.save(user);
     }
 
 
     //возвращает из базы сущность авторизованного юзера (ищется по email)
     public User getCurAuthUser() throws NullPointerException {
-        String emailCurAuthUser = getCurUserEmail();
+        String emailCurAuthUser = getCurrentUserEmail();
         User user = userRepository.findUserByEmail(emailCurAuthUser)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("user with email " + emailCurAuthUser + " not found"));

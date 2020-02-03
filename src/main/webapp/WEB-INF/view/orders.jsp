@@ -33,7 +33,7 @@
                             <a href="/profile"> <c:out value="${pageContext.request.remoteUser}"/> </a>
                         </li>
                         <li>
-                            <a href="<c:url value="/logout" />" type="button" class="btn btn-danger btn-xs">Выйти</a>
+                            <a href="<c:url value="/logout" />">Выйти</a>
                         </li>
                     </ul>
                 </div>
@@ -55,6 +55,7 @@
                     <th>Описание</th>
                     <th>Дата начала</th>
                     <th>Дата завершения</th>
+                    <th>Заказано мест</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -66,6 +67,7 @@
                         <td>${userOrder.getTour().getDescription()}</td>
                         <td><fmt:formatDate value="${userOrder.getTour().getStart_date()}" pattern="yyyy-MM-dd"/></td>
                         <td><fmt:formatDate value="${userOrder.getTour().getEnd_date()}" pattern="yyyy-MM-dd"/></td>
+                        <td>${userOrder.getCountReservedByUser()}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${tourService.isPassedTour(userOrder.getTour())}">

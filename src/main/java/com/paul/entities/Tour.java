@@ -1,13 +1,22 @@
 package com.paul.entities;
 
+import com.fasterxml.jackson.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "tours")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id_tour")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //решает проблему ошибки загрузки в json полей этого класса, зависимых от других моделей
 public class Tour {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tour_id_generator")
+    @SequenceGenerator(name="tour_id_generator", sequenceName = "tour_seq", allocationSize=1)
     private Long id_tour;
     private String name;
     private String description;
@@ -18,6 +27,7 @@ public class Tour {
     private Date end_date;
     private Integer count_limit;
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+   // @JsonManagedReference
     Set<Order> ordersOfTour;
 
     public Tour() {
@@ -31,6 +41,10 @@ public class Tour {
         this.end_date = end_date;
         this.count_limit = count_limit;
         this.ordersOfTour = new HashSet<>();
+    }
+
+    public void setOrdersOfTour(Set<Order> ordersOfTour) {
+        this.ordersOfTour = ordersOfTour;
     }
 
     public Long getId_tour() {
