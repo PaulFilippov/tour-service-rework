@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 @Controller
 public class UserController {
@@ -29,7 +29,6 @@ public class UserController {
         return "profile";
     }
 
-    //обработка изменения профиля
     @PostMapping(value = "/profile")
     public String changeUserProfile(HttpServletRequest request) {
         String firstname = request.getParameter("first_name");

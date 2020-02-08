@@ -34,7 +34,6 @@ public class OrderService {
         return allOrder;
     }
 
-    // создание нового заказанного тура для текущегор авторизованного юзера
     public void createNewOrderForCurrAuthUser(Tour tour, int numberOfTickets) {
         if (numberOfTickets > 0) {
             User currUser = userService.getCurAuthUser();

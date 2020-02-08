@@ -34,10 +34,12 @@ public class DatabaseLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
+        System.out.println("аплкатион раннер старт");
         generateUsersInBD();
         generateToursInBD();
         generateOldToursInBD();
-        generateOrdersForUsers();
+        generateOrdersOfOldToursForUsers();
+        System.out.println("аплкатион раннер стоп");
     }
 
     public void generateUsersInBD() {
@@ -107,7 +109,7 @@ public class DatabaseLoader implements ApplicationRunner {
         System.out.println("Прошедшие туры сгенерированы");
     }
 
-    public void generateOrdersForUsers() {
+    public void generateOrdersOfOldToursForUsers() {
         for (Long i = 0L; i < 10; i++) {
             int numOrders = 0;
             for (Long j = i+10; j < 20*2; j++) {
@@ -116,7 +118,6 @@ public class DatabaseLoader implements ApplicationRunner {
                 } else if (tourRepository.findById(j).orElse(null) == null) {
                     continue;
                 } else {
-                    //System.out.println("iiiii:"+i+" JJJJ:"+j);
                     User user = userRepository.findById(i).get();
                     Tour tour = tourRepository.findById(j).get();
                     if (tourService.getNumberOfFreePlaces(tour) <= 0) {

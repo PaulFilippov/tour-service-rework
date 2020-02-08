@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    //возвращает email авторизованого юзера (email вводится в поле username в spring sec)
+    //возвращает email авторизованого юзера (email вводится в поле username в spring security)
     public String getCurrentUserEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String emailCurrentAuthUser = auth.getName();
@@ -51,7 +51,6 @@ public class UserService implements UserDetailsService {
     public void saveUserProfile(User user) {
         userRepository.save(user);
     }
-
 
     //возвращает из базы сущность авторизованного юзера (ищется по email)
     public User getCurAuthUser() throws NullPointerException {

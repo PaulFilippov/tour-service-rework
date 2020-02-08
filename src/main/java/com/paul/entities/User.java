@@ -51,7 +51,10 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
-
+   //for set in tests
+    public void setId_user(Long id_user) {
+        this.id_user = id_user;
+    }
 
     public Long getId_user() {
         return id_user;
