@@ -142,14 +142,16 @@ public class User implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id_user, user.id_user) &&
-                Objects.equals(last_name, user.last_name);
+                Objects.equals(first_name, user.first_name) &&
+                Objects.equals(last_name, user.last_name) &&
+                email.equals(user.email) &&
+                password.equals(user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_user, last_name);
+        return Objects.hash(id_user, first_name, last_name, email, password);
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

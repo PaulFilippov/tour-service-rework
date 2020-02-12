@@ -44,7 +44,7 @@ public class DatabaseLoader implements ApplicationRunner {
 
     public void generateUsersInBD() {
         Date dateBirth = new Date();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Calendar cb = Calendar.getInstance();
             cb.setTime(dateBirth);
             cb.add(Calendar.YEAR, -3);

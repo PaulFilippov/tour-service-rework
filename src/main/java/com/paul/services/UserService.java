@@ -5,6 +5,7 @@ import com.paul.entities.User;
 import com.paul.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -28,7 +30,7 @@ public class UserService implements UserDetailsService {
 
 
     public Set<User> getAllUser() {
-        Set<User> allUser = new HashSet();
+        Set<User> allUser = new HashSet<>();
         //cast from Iterable in Set
         userRepository.findAll().iterator().forEachRemaining(allUser::add);
         return allUser;
@@ -43,9 +45,10 @@ public class UserService implements UserDetailsService {
 
     //возвращает email авторизованого юзера (email вводится в поле username в spring security)
     public String getCurrentUserEmail() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String emailCurrentAuthUser = auth.getName();
-        return emailCurrentAuthUser;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return currentPrincipalName;
+//        return emailCurrentAuthUser;
     }
 
     public void saveUserProfile(User user) {
@@ -61,5 +64,16 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserService that = (UserService) o;
+        return Objects.equals(userRepository, that.userRepository);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(userRepository);
+    }
 }

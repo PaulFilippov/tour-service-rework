@@ -75,11 +75,11 @@
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-security:2.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.2.1.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: com.h2database:h2:1.4.200" />
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.9" />
           <element id="library" level="project" name="Maven: org.webjars:bootstrap:4.4.1" />
