@@ -7,6 +7,7 @@ import com.paul.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,9 +28,11 @@ public class OrderService {
         this.userService = userService;
     }
 
+
+
     public Set<Order> getAllOrder() {
         Set<Order> allOrder = new HashSet();
-        //cast from Iterable in Set
+        //cast from Iterable to Set
         orderRep.findAll().iterator().forEachRemaining(allOrder::add);
         return allOrder;
     }
@@ -56,12 +59,12 @@ public class OrderService {
         return userOrders;
     }
 
-    //проверяет есть ли тур уже в заказе у юзера
-    public boolean checkTourInUserOrders(User user, Tour tour) {
-        return user.getUserOrders()
-                .stream()
-                .map(order -> order.getTour())
-                .collect(Collectors.toSet())
-                .contains(tour);
-    }
+//    //проверяет есть ли тур уже в заказе у юзера
+//    public boolean checkTourInUserOrders(User user, Tour tour) {
+//        return user.getUserOrders()
+//                .stream()
+//                .map(order -> order.getTour())
+//                .collect(Collectors.toSet())
+//                .contains(tour);
+//    }
 }
